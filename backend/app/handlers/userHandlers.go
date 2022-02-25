@@ -1,12 +1,12 @@
 package handlers
 
 import (
+	"apiArchitecture/business/services/user"
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"apiArchitecture/business/services/user"
 
-	"github.com/gorilla/mux"
+	"github.com/labstack/echo/v4"
 )
 
 //userHandler struct to be made here
@@ -14,21 +14,26 @@ type userHandlers struct {
 	user user.User
 }
 
-func (h userHandlers) GetUsersRequest(w http.ResponseWriter, r *http.Request) {
+// GetUsersRequest handles the getUser request and returns the JSON response
+// It won't be processing the request btw, GetUsers will do it from business package
+func (h userHandlers) GetUsersRequest(requestContext echo.Context) error {
 
 	fmt.Println("User GET served")
-	// w.Header().Set("Access-Control-Allow-Origin", r.Header.Get("Origin"))
-	// w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE") 
 
-	vars := mux.Vars(r)
-	id := vars["id"]
+	// vars := mux.Vars(r)
+	// id := vars["id"]
+
+	id := requestContext.Param("id")
 
 	userStruct, err := h.user.GetUsers(id)
 
 	if err != "" {
-		w.Write([]byte(err))
-		return
+		// w.Write([]byte(err))
+		response := err
+
+		return requestContext.JSON(http.StatusNotFound, response)
 	}
 
-	json.NewEncoder(w).Encode(userStruct)
+	// json.NewEncoder(w).Encode(userStruct)
+	return requestContext.JSON(http.StatusOK, userStruct)
 }
