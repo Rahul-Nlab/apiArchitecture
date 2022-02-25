@@ -3,14 +3,15 @@ package main
 import (
 	"apiArchitecture/app/handlers"
 	"apiArchitecture/business/database"
-	
+
 	"fmt"
 	"log"
 	"net/http"
 
 	muxhan "github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
-	_"github.com/lib/pq"
+	// "github.com/labstack/echo/v4"
+	_ "github.com/lib/pq"
 )
 
 func main() {
@@ -18,7 +19,8 @@ func main() {
 	defer db.Close()
 
 	router := mux.NewRouter()
-	
+	// router := echo.New()
+
 	//API FUNCTION TO BE CREATED
 	handlers.Api(db, router)
 
