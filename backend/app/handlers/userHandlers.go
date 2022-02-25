@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"apiArchitecture/business/services/user"
-	"encoding/json"
 	"fmt"
 	"net/http"
 
