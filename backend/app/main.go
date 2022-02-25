@@ -10,9 +10,7 @@ import (
 
 	muxhan "github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
-
-	// "github.com/gorilla/mux"
-	_ "github.com/lib/pq"
+	_"github.com/lib/pq"
 )
 
 func main() {
