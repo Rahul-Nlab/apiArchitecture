@@ -26,6 +26,5 @@ func main() {
 	// originsOk := muxhan.AllowedOrigins([]string{"*"})
 	// methodsOk := muxhan.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "OPTIONS", "DELETE"})
 
-	// log.Fatal(http.ListenAndServe(":5434", muxhan.CORS(headersOk, originsOk, methodsOk)(router)))
 	router.Logger.Fatal(router.Start(":5435"))
 }
