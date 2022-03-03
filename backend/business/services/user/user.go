@@ -58,7 +58,7 @@ func (h User) GetUsers(id string) ([]Users, string) {
 
 // CreateUsers still has some error, I don't know why pointer o the user table is passed here,
 // a user struct which is de-pointered has to be send here
-func (h User) CreateUsers(id string, reqBody *Users) string {
+func (h User) CreateUsers(id string, reqBody *Users)  {
 	var intId int
 	var str string
 
@@ -66,23 +66,23 @@ func (h User) CreateUsers(id string, reqBody *Users) string {
 		var err error
 		intId, err = strconv.Atoi(id)
 		if err != nil {
-			return "Index id must be a valid integer!"
+			// return "Index id must be a valid integer!"
 		}
 		str = "INSERT INTO Users(first_name, middle_name, last_name, u_id) VALUES ($1, $2, $3, $4)"
 		_, e := h.db.Exec(str, reqBody.First_name, reqBody.Middle_name, reqBody.Last_name, intId)
 		if e != nil {
-			return fmt.Sprintf("User id %v does already exists!", intId)
+			// return fmt.Sprintf("User id %v does already exists!", intId)
 		}
 
 	} else {
 		str = "INSERT INTO Users(first_name, middle_name, last_name) VALUES ($1, $2, $3)"
 		_, e := h.db.Exec(str, reqBody.First_name, reqBody.Middle_name, reqBody.Last_name)
 		if e != nil {
-			return e.Error()
+			// return e.Error()
 		}
 
 	}
-	return "Successfully added!"
+	// return "Successfully added!"
 }
 
 func (h User) DeleteUser(id string) string {

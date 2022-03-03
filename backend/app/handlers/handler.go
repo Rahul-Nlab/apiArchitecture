@@ -15,6 +15,8 @@ func Api(db *sql.DB, router *echo.Echo) {
 		user: user.New(db),
 	}
 
+	// routes defining here for users
+
 	router.GET("/v1/users/", hUser.GetUsersRequest)
 	router.GET("/v1/users/:id/", hUser.GetUsersRequest)
 
@@ -24,6 +26,8 @@ func Api(db *sql.DB, router *echo.Echo) {
 	router.PUT("/v1/users/:id/", hUser.ChangeUserRequest)
 
 	router.DELETE("/v1/users/:id/", hUser.DeleteUserRequest)
+
+	// new addressHandlres is created here for better organization
 
 	hAddress := addressHandlers{
 		address: address.New(db),

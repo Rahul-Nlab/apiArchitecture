@@ -7,3 +7,5 @@ type Users struct {
 	Last_name   string `json:"last_name"`
 	// Address Addresses
 }
+
+// JSON RESPONSE TO BE ADDED

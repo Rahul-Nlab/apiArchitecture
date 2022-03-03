@@ -51,14 +51,11 @@ func (h userHandlers) CreateUserRequest(requestContext echo.Context) error {
 	// userStruct, err := h.user.GetUsers(id)
 
 	reqBody := new(user.Users)
-	if err := requestContext.Bind(reqBody); err != nil {
-		response := "Please enter a valid json input!"
-		return requestContext.JSON(http.StatusBadRequest, response)
-	}
+	requestContext.Bind(reqBody)
+	// fmt.Println(requestContext)
+	h.user.CreateUsers(id, reqBody)
 
-	response := h.user.CreateUsers(id, reqBody)
-
-	return requestContext.JSON(http.StatusOK, response)
+	return requestContext.JSON(http.StatusOK, reqBody)
 }
 
 func (h userHandlers) ChangeUserRequest(requestContext echo.Context) error {
