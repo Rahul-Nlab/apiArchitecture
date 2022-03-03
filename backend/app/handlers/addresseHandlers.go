@@ -17,11 +17,15 @@ func (h addressHandlers) GetAddressesRequest(requestContext echo.Context) error 
 
 	id := requestContext.Param("id")
 
-	addressStruct, err := h.address.AddressOfUser(id)
-
-	if err != "" {
-		return requestContext.JSON(http.StatusNotFound, err)
+	addressStruct, msg := h.address.AddressOfUser(id)
+	var jsonResponse address.JsonResponse
+	jsonResponse.Message = msg
+	
+	if msg != "" {
+		jsonResponse.Data = nil
+		return requestContext.JSON(http.StatusNotFound, jsonResponse)
 	}
 
-	return requestContext.JSON(http.StatusAccepted, addressStruct)
+	jsonResponse.Data = addressStruct
+	return requestContext.JSON(http.StatusAccepted, jsonResponse)
 }

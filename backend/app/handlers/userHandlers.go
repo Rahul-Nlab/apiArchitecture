@@ -22,9 +22,9 @@ func (h userHandlers) GetUsersRequest(requestContext echo.Context) error {
 
 	userStruct, msg := h.user.GetUsers(id)
 	var jsonResponse user.JsonResponse
-
+	jsonResponse.Message = msg
+	
 	if msg != "" {
-		jsonResponse.Message = msg
 		jsonResponse.Data = nil
 		return requestContext.JSON(http.StatusNotFound, jsonResponse)
 	}
