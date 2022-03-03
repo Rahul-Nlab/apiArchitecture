@@ -8,7 +8,6 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-//userHandler struct to be made here
 type userHandlers struct {
 	user user.User
 }
@@ -21,13 +20,18 @@ func (h userHandlers) GetUsersRequest(requestContext echo.Context) error {
 
 	id := requestContext.Param("id")
 
-	userStruct, err := h.user.GetUsers(id)
+	userStruct, msg := h.user.GetUsers(id)
+	var jsonResponse user.JsonResponse
 
-	if err != "" {
-		return requestContext.JSON(http.StatusNotFound, err)
+	if msg != "" {
+		jsonResponse.Message = msg
+		jsonResponse.Data = nil
+		return requestContext.JSON(http.StatusNotFound, jsonResponse)
 	}
 
-	return requestContext.JSON(http.StatusOK, userStruct)
+	jsonResponse.Data = userStruct
+
+	return requestContext.JSON(http.StatusOK, jsonResponse)
 }
 
 func (h userHandlers) DeleteUserRequest(requestContext echo.Context) error {
@@ -36,10 +40,19 @@ func (h userHandlers) DeleteUserRequest(requestContext echo.Context) error {
 
 	id := requestContext.Param("id")
 
-	response := h.user.DeleteUser(id)
+	msg := h.user.DeleteUser(id)
 
-	return requestContext.JSON(http.StatusOK, response)
+	var jsonResponse user.JsonResponse
 
+	if msg != "" {
+		jsonResponse.Data = nil
+		jsonResponse.Message = msg
+		return requestContext.JSON(http.StatusBadRequest, jsonResponse)
+	}
+
+	jsonResponse.Message = "Deleted Successfully"
+
+	return requestContext.JSON(http.StatusOK, jsonResponse)
 }
 
 func (h userHandlers) CreateUserRequest(requestContext echo.Context) error {
@@ -48,14 +61,25 @@ func (h userHandlers) CreateUserRequest(requestContext echo.Context) error {
 
 	id := requestContext.Param("id")
 
-	// userStruct, err := h.user.GetUsers(id)
+	reqBody := user.Users{}
+	var jsonResponse user.JsonResponse
 
-	reqBody := new(user.Users)
-	requestContext.Bind(reqBody)
-	// fmt.Println(requestContext)
-	h.user.CreateUsers(id, reqBody)
+	e := requestContext.Bind(&reqBody)
+	if e != nil {
+		fmt.Println("problem while binding your input")
+	}
 
-	return requestContext.JSON(http.StatusOK, reqBody)
+	msg := h.user.CreateUsers(id, reqBody)
+	jsonResponse.Message = msg
+	jsonResponse.Data = nil
+
+	if msg != "" {
+		return requestContext.JSON(http.StatusBadRequest, jsonResponse)
+	}
+
+	jsonResponse.Message = "Successfully added!"
+
+	return requestContext.JSON(http.StatusOK, jsonResponse)
 }
 
 func (h userHandlers) ChangeUserRequest(requestContext echo.Context) error {
@@ -64,13 +88,21 @@ func (h userHandlers) ChangeUserRequest(requestContext echo.Context) error {
 
 	id := requestContext.Param("id")
 
-	reqBody := new(user.Users)
-	if err := requestContext.Bind(reqBody); err != nil {
-		response := "Please enter a valid json input!"
-		return requestContext.JSON(http.StatusBadRequest, response)
+	reqBody := user.Users{}
+	var jsonResponse user.JsonResponse
+
+	err := requestContext.Bind(&reqBody)
+	if err != nil {
+		fmt.Println("problem while binding your input ")
 	}
 
-	response := h.user.ChangeUser(id, reqBody)
+	msg := h.user.ChangeUser(id, reqBody)
+	jsonResponse.Message = msg
+	jsonResponse.Data = nil
 
-	return requestContext.JSON(http.StatusOK, response)
+	if msg != "" {
+		return requestContext.JSON(http.StatusBadRequest, jsonResponse)
+	}
+
+	return requestContext.JSON(http.StatusOK, jsonResponse)
 }

@@ -34,5 +34,4 @@ func Api(db *sql.DB, router *echo.Echo) {
 	}
 
 	router.GET("/v1/users/:id/addresses/", hAddress.GetAddressesRequest)
-
 }

@@ -15,17 +15,12 @@ func main() {
 	db := database.Setup()
 	defer db.Close()
 
-	// router := mux.NewRouter()
 	router := echo.New()
 
 	//API FUNCTION TO BE CREATED
 	handlers.Api(db, router)
 
-	fmt.Println("Up!")
-
-	// headersOk := muxhan.AllowedHeaders([]string{"*"})
-	// originsOk := muxhan.AllowedOrigins([]string{"*"})
-	// methodsOk := muxhan.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "OPTIONS", "DELETE"})
+	fmt.Println("Up and runnin..!")
 
 	router.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins: []string{"*"},
