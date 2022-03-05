@@ -162,5 +162,5 @@ func (h User) ChangeUser(id string, reqBody Users) string {
 		return e.Error()
 	}
 
-	return "Update Successful!"
+	return ""
 }

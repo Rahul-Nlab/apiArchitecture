@@ -104,5 +104,7 @@ func (h userHandlers) ChangeUserRequest(requestContext echo.Context) error {
 		return requestContext.JSON(http.StatusBadRequest, jsonResponse)
 	}
 
+	jsonResponse.Message = "Update Successful!"
+
 	return requestContext.JSON(http.StatusOK, jsonResponse)
 }
