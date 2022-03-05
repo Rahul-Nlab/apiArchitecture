@@ -117,7 +117,6 @@ export default {
         newVarAddresses: [],
         switchForAPIResponse: false,
         isShow:false,
-        // switch0:false,
         deleteSwitch:false,
         switchForNewForm:false,
         switchForEditForm:false,
@@ -130,9 +129,6 @@ export default {
         userIdForGet: "",
         userIdForEdit: "",
         newVarFirstName: "",
-        // lastName: "",
-        // firstName: "",
-        // middleName: "",
         increment: Number,
         };
     },

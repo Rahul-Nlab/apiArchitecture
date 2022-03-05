@@ -3,12 +3,12 @@ package handlers
 import (
 	"apiArchitecture/business/services/address"
 	"apiArchitecture/business/services/user"
-	"database/sql"
+	"github.com/jmoiron/sqlx"
 
 	"github.com/labstack/echo/v4"
 )
 
-func Api(db *sql.DB, router *echo.Echo) {
+func Api(db *sqlx.DB, router *echo.Echo) {
 	//here, the function accepts the database pointer that we've sent, initializes the userHandler Struct by calling
 	// that New() function from service(user) package
 	hUser := userHandlers{

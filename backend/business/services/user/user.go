@@ -1,16 +1,16 @@
 package user
 
 import (
-	"database/sql"
+	"github.com/jmoiron/sqlx"
 	"fmt"
 	"strconv"
 )
 
 type User struct {
-	db *sql.DB
+	db *sqlx.DB
 }
 
-func New(db *sql.DB) User {
+func New(db *sqlx.DB) User {
 	return User{
 		db: db,
 	}
@@ -36,6 +36,8 @@ func (h User) GetUsers(id string) ([]Users, string) {
 		return nil, "There was a problem while executing the query"
 	}
 
+	defer rows.Close()
+
 	var UserStruct []Users
 	for rows.Next() {
 		var userId int
@@ -46,6 +48,10 @@ func (h User) GetUsers(id string) ([]Users, string) {
 			return nil, "Error while scanning database."
 		}
 		UserStruct = append(UserStruct, Users{U_id: userId, First_name: fName, Middle_name: mName, Last_name: lName})
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err.Error()
 	}
 
 	if UserStruct == nil {
@@ -123,6 +129,9 @@ func (h User) DeleteUser(id string) string {
 		return ""
 
 	} else {
+		if err := rows.Err(); err != nil {
+			return err.Error()
+		}
 		return "User has addresses, so cannot be deleted."
 	}
 }
@@ -153,6 +162,10 @@ func (h User) ChangeUser(id string, reqBody Users) string {
 
 	if !rows.Next() {
 		return fmt.Sprintf("User id %v does already exists!", intId)
+	}
+
+	if err := rows.Err(); err != nil {
+		return err.Error()
 	}
 
 	str = "UPDATE Users SET first_name = $1, middle_name = $2, last_name = $3 WHERE u_id = $4"

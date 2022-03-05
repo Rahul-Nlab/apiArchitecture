@@ -1,16 +1,16 @@
 package address
 
 import (
-	"database/sql"
+	"github.com/jmoiron/sqlx"
 	"fmt"
 	"strconv"
 )
 
 type Address struct {
-	db *sql.DB
+	db *sqlx.DB
 }
 
-func New(db *sql.DB) Address {
+func New(db *sqlx.DB) Address {
 	return Address{
 		db: db,
 	}
@@ -47,6 +47,10 @@ func (h Address) AddressOfUser(id string) ([]Addresses, string) {
 		}
 
 		userAddresses = append(userAddresses, Addresses{A_id: addressId, Street: addressStreet, Area: addressArea, Pincode: addressPincode, City: addressCity})
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err.Error()
 	}
 
 	if len(userAddresses) == 0 {

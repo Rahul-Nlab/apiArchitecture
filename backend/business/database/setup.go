@@ -1,7 +1,7 @@
 package database
 
 import (
-	"database/sql"
+	"github.com/jmoiron/sqlx"
 	"fmt"
 )
 
@@ -13,9 +13,9 @@ const (
 	dbName     = "rahul"
 )
 
-func Setup() *sql.DB {
+func Setup() *sqlx.DB {
 	dbInfo := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", dbHost, dbPort, dbUser, dbPassword, dbName)
-	db, err := sql.Open("postgres", dbInfo)
+	db, err := sqlx.Open("postgres", dbInfo)
 	if err != nil {
 		fmt.Println("There was an error while connecting to the database.")
 		return nil
