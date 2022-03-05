@@ -10,5 +10,6 @@ type Addresses struct {
 
 type JsonResponse struct {
 	Data    []Addresses
+	
 	Message string
 }

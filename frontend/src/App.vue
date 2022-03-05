@@ -322,8 +322,6 @@ export default {
 
 #app {
   font-family: "Courier New", Courier, monospace;
-  /* -webkit-font-smoothing: antialiased; */
-  /* -moz-osx-font-smoothing: grayscale; */
   text-align: center;
   color: #2C3E50;
   margin-right: 360px;
