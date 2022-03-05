@@ -31,7 +31,7 @@ func (h User) GetUsers(id string) ([]Users, string) {
 		str = "SELECT * FROM Users WHERE $1 = $1 ORDER BY u_id ASC"
 	}
 
-	rows, err := h.db.Query(str, intId)
+	rows, err := h.db.Queryx(str, intId)
 	if err != nil {
 		return nil, "There was a problem while executing the query"
 	}
@@ -40,14 +40,15 @@ func (h User) GetUsers(id string) ([]Users, string) {
 
 	var UserStruct []Users
 	for rows.Next() {
-		var userId int
-		var fName, mName, lName string
 
-		err := rows.Scan(&userId, &fName, &mName, &lName)
+		var tempUserStruct Users
+		
+		err := rows.StructScan(&tempUserStruct)
 		if err != nil {
 			return nil, "Error while scanning database."
 		}
-		UserStruct = append(UserStruct, Users{U_id: userId, First_name: fName, Middle_name: mName, Last_name: lName})
+		UserStruct = append(UserStruct, tempUserStruct)
+
 	}
 
 	if err := rows.Err(); err != nil {
@@ -96,6 +97,7 @@ func (h User) CreateUsers(id string, reqBody Users) string {
 	return ""
 }
 
+// DeleteUser need more optimized flow
 func (h User) DeleteUser(id string) string {
 
 	if id == "" {
@@ -136,6 +138,7 @@ func (h User) DeleteUser(id string) string {
 	}
 }
 
+//ChangeUser needs to be executed with exec function 
 func (h User) ChangeUser(id string, reqBody Users) string {
 
 	var intId int

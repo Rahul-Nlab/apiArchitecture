@@ -1,9 +1,10 @@
 package address
 
 import (
-	"github.com/jmoiron/sqlx"
 	"fmt"
 	"strconv"
+
+	"github.com/jmoiron/sqlx"
 )
 
 type Address struct {
@@ -27,7 +28,7 @@ func (h Address) AddressOfUser(id string) ([]Addresses, string) {
 		return nil, fmt.Sprintf("'%v' is not a valid integer!", id)
 	}
 
-	rows, err := h.db.Query("SELECT * FROM Addresses where a_id in (select a_id from users_addresses where u_id = $1); ", intId)
+	rows, err := h.db.Queryx("SELECT * FROM Addresses where a_id in (select a_id from users_addresses where u_id = $1); ", intId)
 
 	if err != nil {
 		return nil, err.Error()
@@ -38,15 +39,12 @@ func (h Address) AddressOfUser(id string) ([]Addresses, string) {
 	userAddresses := make([]Addresses, 0)
 
 	for rows.Next() {
-		var addressPincode, addressId int
-		var addressStreet, addressArea, addressCity string
-
-		err := rows.Scan(&addressId, &addressStreet, &addressArea, &addressPincode, &addressCity)
+		var tempUserAddress Addresses
+		err := rows.StructScan(&tempUserAddress)
 		if err != nil {
-			return nil, err.Error()
+			return nil, "Error while scanning database."
 		}
-
-		userAddresses = append(userAddresses, Addresses{A_id: addressId, Street: addressStreet, Area: addressArea, Pincode: addressPincode, City: addressCity})
+		userAddresses = append(userAddresses, tempUserAddress)
 	}
 
 	if err := rows.Err(); err != nil {
