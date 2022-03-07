@@ -3,6 +3,7 @@ package main
 import (
 	"apiArchitecture/app/handlers"
 	"apiArchitecture/business/database"
+	"log"
 
 	"fmt"
 
@@ -21,6 +22,7 @@ func main() {
 	handlers.Api(db, router)
 
 	fmt.Println("Up and runnin..!")
+	log.Print("First log!")
 
 	router.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins: []string{"*"},

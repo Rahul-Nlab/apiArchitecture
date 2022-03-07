@@ -64,9 +64,10 @@ func (h userHandlers) CreateUserRequest(requestContext echo.Context) error {
 	reqBody := user.Users{}
 	var jsonResponse user.JsonResponse
 
-	e := requestContext.Bind(&reqBody)
-	if e != nil {
+	err := requestContext.Bind(&reqBody)
+	if err != nil {
 		fmt.Println("problem while binding your input")
+		fmt.Println(err.Error())
 	}
 
 	msg := h.user.CreateUsers(id, reqBody)
@@ -94,6 +95,7 @@ func (h userHandlers) ChangeUserRequest(requestContext echo.Context) error {
 	err := requestContext.Bind(&reqBody)
 	if err != nil {
 		fmt.Println("problem while binding your input ")
+		// fmt.Println(err.Error())
 	}
 
 	msg := h.user.ChangeUser(id, reqBody)

@@ -1,9 +1,11 @@
 package user
 
 import (
-	"github.com/jmoiron/sqlx"
 	"fmt"
+	"log"
 	"strconv"
+
+	"github.com/jmoiron/sqlx"
 )
 
 type User struct {
@@ -17,6 +19,7 @@ func New(db *sqlx.DB) User {
 }
 
 func (h User) GetUsers(id string) ([]Users, string) {
+	log.Print("From GetUser business package")
 	var intId int
 	var str string
 
