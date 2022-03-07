@@ -136,7 +136,7 @@ export default {
     mounted() {
         console.log();
     },
-// console.log();
+
     methods: {
 
         preventEvent(event) {
@@ -230,6 +230,7 @@ export default {
                     }
                     const response = await axios.put(url, jsonRes, headers);                     
                     this.reqResponse = response.data.Message;
+                    // console.log(this.reqResponse);
                 } catch (err) {
                     console.log(err);
                 } finally {
