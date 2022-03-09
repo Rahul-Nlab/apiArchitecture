@@ -2,7 +2,6 @@ package user
 
 import (
 	"fmt"
-	"log"
 	"strconv"
 
 	"github.com/jmoiron/sqlx"
@@ -19,7 +18,7 @@ func New(db *sqlx.DB) User {
 }
 
 func (h User) GetUsers(id string) ([]Users, string) {
-	log.Print("From GetUser business package")
+	// log.Print("From GetUser business package")
 	var intId int
 	var str string
 
@@ -45,7 +44,7 @@ func (h User) GetUsers(id string) ([]Users, string) {
 	for rows.Next() {
 
 		var tempUserStruct Users
-		
+
 		err := rows.StructScan(&tempUserStruct)
 		if err != nil {
 			return nil, "Error while scanning database."
@@ -141,7 +140,7 @@ func (h User) DeleteUser(id string) string {
 	}
 }
 
-//ChangeUser needs to be executed with exec function 
+//ChangeUser needs to be executed with exec function
 func (h User) ChangeUser(id string, reqBody Users) string {
 
 	var intId int
@@ -167,7 +166,7 @@ func (h User) ChangeUser(id string, reqBody Users) string {
 	defer rows.Close()
 
 	if !rows.Next() {
-		return fmt.Sprintf("User id %v does already exists!", intId)
+		return fmt.Sprintf("User id %v does not exists!", intId)
 	}
 
 	if err := rows.Err(); err != nil {
