@@ -1,9 +1,12 @@
 package user
 
+// in LOG BRANCH
+
 import (
-	"github.com/jmoiron/sqlx"
 	"fmt"
 	"strconv"
+
+	"github.com/jmoiron/sqlx"
 )
 
 type User struct {
@@ -42,7 +45,7 @@ func (h User) GetUsers(id string) ([]Users, string) {
 	for rows.Next() {
 
 		var tempUserStruct Users
-		
+
 		err := rows.StructScan(&tempUserStruct)
 		if err != nil {
 			return nil, "Error while scanning database."
@@ -138,7 +141,7 @@ func (h User) DeleteUser(id string) string {
 	}
 }
 
-//ChangeUser needs to be executed with exec function 
+//ChangeUser needs to be executed with exec function
 func (h User) ChangeUser(id string, reqBody Users) string {
 
 	var intId int
