@@ -18,6 +18,7 @@ func New(db *sqlx.DB) User {
 }
 
 func (h User) GetUsers(id string) ([]Users, string) {
+	_, _, errorLogger, _, _:= LoggerFunction()
 	var intId int
 	var str string
 
@@ -25,6 +26,7 @@ func (h User) GetUsers(id string) ([]Users, string) {
 		var err error
 		intId, err = strconv.Atoi(id)
 		if err != nil {
+			errorLogger.Println("Invalid index id recieved")
 			return nil, "Index id must be a valid integer!"
 		}
 		str = "SELECT * FROM Users WHERE u_id = $1 ORDER BY u_id ASC"
@@ -34,6 +36,7 @@ func (h User) GetUsers(id string) ([]Users, string) {
 
 	rows, err := h.db.Queryx(str, intId)
 	if err != nil {
+		errorLogger.Println("Problem while executing query")
 		return nil, "There was a problem while executing the query"
 	}
 
@@ -46,6 +49,7 @@ func (h User) GetUsers(id string) ([]Users, string) {
 
 		err := rows.StructScan(&tempUserStruct)
 		if err != nil {
+			errorLogger.Println("error whiel scanning db")
 			return nil, "Error while scanning database."
 		}
 		UserStruct = append(UserStruct, tempUserStruct)
