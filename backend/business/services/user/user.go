@@ -1,7 +1,5 @@
 package user
 
-// in LOG BRANCH
-
 import (
 	"fmt"
 	"strconv"
