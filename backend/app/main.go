@@ -18,6 +18,8 @@ func main() {
 
 	router := echo.New()
 
+	// router 
+
 	//API FUNCTION TO BE CREATED
 	handlers.Api(db, router)
 

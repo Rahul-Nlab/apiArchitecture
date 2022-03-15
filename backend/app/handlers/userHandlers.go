@@ -21,6 +21,7 @@ func (h userHandlers) GetUsersRequest(requestContext echo.Context) error {
 	id := requestContext.Param("id")
 
 	userStruct, msg := h.user.GetUsers(id)
+	
 	var jsonResponse user.JsonResponse
 	jsonResponse.Message = msg
 	
